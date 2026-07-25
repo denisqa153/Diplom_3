@@ -1,0 +1,16 @@
+# Виртуальное окружение
+.venv/
+venv/
+ENV/
+
+# Кэш Python и pytest
+**/__pycache__/
+*.pyc
+.pytest_cache/
+
+# Отчеты тестирования Allure
+allure-results/
+allure-report/
+
+# Системные файлы Mac
+.DS_Store
