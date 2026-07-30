@@ -36,3 +36,13 @@ class BasePage:
             EC.invisibility_of_element_located(OVERLAY_LOCATOR),
             message="Модальный оверлей не исчез за отведённое время"
         )
+
+    def open_url(self, url):
+        self.driver.get(url)
+
+    def find_elements_with_wait(self, locator, time=5):
+        WebDriverWait(self.driver, timeout=time).until(
+            EC.presence_of_element_located(locator),
+            message=f"Не удалось дождаться элементов по локатору: {locator}"
+    )
+        return self.driver.find_elements(*locator)

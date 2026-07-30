@@ -104,3 +104,10 @@ class ConstructorPage(BasePage):
             message="Модальное окно заказа не появилось"
         )
         return True
+    def open(self, base_url):
+        self.driver.get(base_url)
+        return self
+
+    def open_feed(self, base_url):
+        self.driver.get(f"{base_url}/feed")
+        return self

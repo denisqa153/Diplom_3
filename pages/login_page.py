@@ -8,6 +8,10 @@ class LoginPage(BasePage):
     def open_login_page(self, base_url):
         self.driver.get(f"{base_url}/login")
 
+    def open_login(self, base_url):
+        self.driver.get(f"{base_url}/login")
+        return self
+
     def click_forgot_password(self):
         self.wait_for_overlay_to_disappear()
         self.click_element(LoginPageLocators.FORGOT_PASSWORD_LINK)

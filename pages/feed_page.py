@@ -8,7 +8,7 @@ from locators import FeedPageLocators, ProfilePageLocators
 class FeedPage(BasePage):
 
     def open_feed(self, base_url):
-        self.driver.get(f"{base_url}/feed")
+        self.open_url(f"{base_url}/feed")
         WebDriverWait(self.driver, 10).until(
             EC.visibility_of_element_located(FeedPageLocators.FEED_TITLE),
             message="Страница ленты заказов не загрузилась"
@@ -70,7 +70,7 @@ class FeedPage(BasePage):
 
     def is_order_number_in_feed(self, order_number):
         formatted = str(order_number).zfill(6)
-        elements = self.driver.find_elements(*FeedPageLocators.FEED_ORDER_NUMBER)
+        elements = self.find_elements_with_wait(FeedPageLocators.FEED_ORDER_NUMBER)
         for el in elements:
             try:
                 if formatted in el.text:
@@ -94,10 +94,3 @@ class FeedPage(BasePage):
             except Exception:
                 continue
         return result
-
-    def find_elements_with_wait(self, locator, time=5):
-        WebDriverWait(self.driver, timeout=time).until(
-            EC.presence_of_element_located(locator),
-            message=f"Не удалось дождаться элементов по локатору: {locator}"
-        )
-        return self.driver.find_elements(*locator)

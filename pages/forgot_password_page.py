@@ -1,6 +1,7 @@
 from pages.base_page import BasePage
 from locators import ForgotPasswordPageLocators
 
+
 class ForgotPasswordPage(BasePage):
 
     def open_forgot_password_page(self, base_url):

@@ -1,7 +1,9 @@
 import requests
 import allure
-import time
 from data import BASE_URL
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from locators import FeedPageLocators
 
 
 @allure.epic("Лента заказов")
@@ -18,6 +20,9 @@ class TestFeed:
         assert ui.feed.is_feed_order_modal_visible() is True
 
         ui.feed.close_feed_order_modal()
+        assert WebDriverWait(driver, 5).until(
+            EC.invisibility_of_element_located(FeedPageLocators.MODAL_VISIBLE)
+        )
 
     @allure.title("Тест 2: Заказы из «История заказов» отображаются на «Лента заказов»")
     def test_user_order_appears_in_feed(self, driver, password_recovery_ui, create_user_success, login_user):
@@ -33,7 +38,9 @@ class TestFeed:
 
         with allure.step("Проверяем наличие заказа в истории"):
             ui.feed.open_history_via_ui()
-            time.sleep(3)
+            WebDriverWait(driver, 5).until(
+                EC.presence_of_element_located(FeedPageLocators.HISTORY_ORDER_NUMBER)
+            )
             history_numbers = ui.feed.get_history_order_numbers()
             assert any(str(order_number) in num for num in history_numbers), \
                 f"Заказ #{order_number} не найден в истории. Номера: {history_numbers}"
