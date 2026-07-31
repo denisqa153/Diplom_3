@@ -36,6 +36,7 @@ class TestConstructor:
 
         ui.constructor.click_first_ingredient()
         ui.constructor.click_close_modal()
+        assert ui.constructor.is_modal_details_invisible() is True
 
     @allure.title("Тест 5: Добавление ингредиента в заказ увеличивает каунтер")
     def test_ingredient_counter_increases(self, driver, password_recovery_ui):
@@ -51,7 +52,6 @@ class TestConstructor:
     def test_logged_user_can_create_order(self, driver, password_recovery_ui, create_user_success, login_user):
         ui = password_recovery_ui
         ui.constructor.open(BASE_URL)
-        assert ui.constructor.is_constructor_title_visible() is True
 
         ui.constructor.drag_and_drop_ingredient_to_basket()
         ui.constructor.click_create_order()

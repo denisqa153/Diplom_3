@@ -5,7 +5,7 @@ from locators import ForgotPasswordPageLocators
 class ForgotPasswordPage(BasePage):
 
     def open_forgot_password_page(self, base_url):
-        self.driver.get(f"{base_url}/forgot-password")
+        self.open_url(f"{base_url}/forgot-password")
 
     def enter_email(self, email):
         self.fill_input(ForgotPasswordPageLocators.INPUT_EMAIL, email)

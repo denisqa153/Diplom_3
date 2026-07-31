@@ -1,7 +1,5 @@
 import allure
 from data import BASE_URL
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 
 @allure.epic("Личный Кабинет")
@@ -15,7 +13,7 @@ class TestPasswordRecovery:
         password_recovery_ui.login.click_forgot_password()
 
         with allure.step("Проверить, что URL изменился на /forgot-password"):
-            assert "/forgot-password" in driver.current_url
+            assert "/forgot-password" in password_recovery_ui.login.get_current_url()
 
     @allure.title("Тест 2: Ввод почты зарегистрированного пользователя и клик 'Восстановить'")
     def test_submit_forgot_password_form(self, driver, password_recovery_ui, create_user_success):
@@ -27,5 +25,5 @@ class TestPasswordRecovery:
         password_recovery_ui.forgot_password.click_restore_button()
 
         with allure.step("Проверить переход на страницу ввода нового пароля /reset-password"):
-            assert WebDriverWait(driver, 5).until(EC.url_contains("/reset-password")), \
+            assert password_recovery_ui.forgot_password.wait_for_url_contains("/reset-password"), \
                 "Не выполнен переход на /reset-password"

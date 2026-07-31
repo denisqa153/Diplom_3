@@ -1,6 +1,4 @@
 import time
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from pages.base_page import BasePage
 from locators import FeedPageLocators, ProfilePageLocators
 
@@ -9,38 +7,29 @@ class FeedPage(BasePage):
 
     def open_feed(self, base_url):
         self.open_url(f"{base_url}/feed")
-        WebDriverWait(self.driver, 10).until(
-            EC.visibility_of_element_located(FeedPageLocators.FEED_TITLE),
-            message="Страница ленты заказов не загрузилась"
-        )
+        self.wait_for_visibility(FeedPageLocators.FEED_TITLE, time=10)
 
     def is_feed_title_visible(self):
         return self.find_element_with_wait(FeedPageLocators.FEED_TITLE).is_displayed()
 
     def click_first_feed_order(self):
-        element = WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable(FeedPageLocators.FEED_ORDER_CARD),
-            message="Карточка заказа не кликабельна"
-        )
+        element = self.wait_for_clickable(FeedPageLocators.FEED_ORDER_CARD, time=10)
         element.click()
 
     def is_feed_order_modal_visible(self):
-        WebDriverWait(self.driver, timeout=10).until(
-            EC.visibility_of_element_located(FeedPageLocators.MODAL_VISIBLE),
-            message="Модалка заказа не появилась"
-        )
+        self.wait_for_visibility(FeedPageLocators.MODAL_VISIBLE, time=10)
         return True
 
+    def is_feed_order_modal_invisible(self):
+        try:
+            self.wait_for_invisibility(FeedPageLocators.MODAL_VISIBLE, time=5)
+            return True
+        except Exception:
+            return False
+
     def close_feed_order_modal(self):
-        element = WebDriverWait(self.driver, 5).until(
-            EC.element_to_be_clickable(FeedPageLocators.MODAL_CLOSE_BUTTON),
-            message="Кнопка закрытия модалки не кликабельна"
-        )
-        element.click()
-        WebDriverWait(self.driver, timeout=5).until(
-            EC.invisibility_of_element_located(FeedPageLocators.MODAL_VISIBLE),
-            message="Модалка заказа не закрылась"
-        )
+        self.click_element(FeedPageLocators.MODAL_CLOSE_BUTTON)
+        self.wait_for_invisibility(FeedPageLocators.MODAL_VISIBLE)
 
     def get_counter_done_all(self):
         return int(self.find_element_with_wait(FeedPageLocators.COUNTER_DONE_ALL).text)
@@ -81,9 +70,9 @@ class FeedPage(BasePage):
 
     def open_history_via_ui(self):
         self.click_element(ProfilePageLocators.HEADER_PROFILE_BUTTON)
-        WebDriverWait(self.driver, 5).until(EC.url_contains("/account/profile"))
+        self.wait_for_url_contains("/account/profile")
         self.click_element(ProfilePageLocators.ORDER_HISTORY_TAB)
-        WebDriverWait(self.driver, 5).until(EC.url_contains("/account/order-history"))
+        self.wait_for_url_contains("/account/order-history")
 
     def get_history_order_numbers(self):
         elements = self.find_elements_with_wait(FeedPageLocators.HISTORY_ORDER_NUMBER)

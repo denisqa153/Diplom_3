@@ -6,7 +6,7 @@ class ResetPasswordPage(BasePage):
 
     @allure.step("Кликнуть по иконке показа/скрытия пароля ('глазику')")
     def click_eye_button(self):
-        self.find_element_with_wait(ResetPasswordPageLocators.EYE_BUTTON).click()
+        self.click_element(ResetPasswordPageLocators.EYE_BUTTON)
 
     @allure.step("Получить значение атрибута class у контейнера поля пароля")
     def get_password_container_class(self):

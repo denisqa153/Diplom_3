@@ -44,5 +44,32 @@ class BasePage:
         WebDriverWait(self.driver, timeout=time).until(
             EC.presence_of_element_located(locator),
             message=f"Не удалось дождаться элементов по локатору: {locator}"
-    )
+        )
         return self.driver.find_elements(*locator)
+
+    def wait_for_visibility(self, locator, time=5):
+        return WebDriverWait(self.driver, timeout=time).until(
+            EC.visibility_of_element_located(locator),
+            message=f"Элемент не стал видимым: {locator}"
+        )
+
+    def wait_for_invisibility(self, locator, time=5):
+        WebDriverWait(self.driver, timeout=time).until(
+            EC.invisibility_of_element_located(locator),
+            message=f"Элемент не стал невидимым: {locator}"
+        )
+
+    def wait_for_clickable(self, locator, time=5):
+        return WebDriverWait(self.driver, timeout=time).until(
+            EC.element_to_be_clickable(locator),
+            message=f"Элемент не стал кликабельным: {locator}"
+        )
+
+    def wait_for_url_contains(self, text, time=5):
+        return WebDriverWait(self.driver, timeout=time).until(
+            EC.url_contains(text),
+            message=f"URL не содержит '{text}'"
+        )
+
+    def execute_script(self, script, *args):
+        return self.driver.execute_script(script, *args)
